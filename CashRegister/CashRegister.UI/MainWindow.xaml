@@ -1,0 +1,50 @@
+﻿<Window x:Class="CashRegister.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OwnUI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding Path=Products}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding Path=ProductName}" Width="150" Height="100" Margin="2 2 2 2" Click="AddToBasket" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <!-- Note sizing based on content with `Auto` -->
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <DataGrid ItemsSource="{Binding Path=Basket}" AutoGenerateColumns="False" IsReadOnly="True" Margin="10 10 10 10" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Produkt" Binding="{Binding Path=Product.ProductName}"/>
+                    <DataGridTextColumn Header="Menge" Binding="{Binding Path=Amount}" />
+                    <DataGridTextColumn Header="Preis" Binding="{Binding Path=TotalPrice}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock Grid.Row="1" HorizontalAlignment="Right"  Margin="0 0 10 0" FontSize="15"  Text="Gesamtsumme:"/>
+            <TextBlock Grid.Row="2" HorizontalAlignment="Right"  Margin="0 0 10 0" FontSize="35" Text="{Binding TotalSum}"/>
+            <Button Grid.Row="3"  Content="Checkout" Margin="10 10 10 10" FontSize="50" Click="OnCheckout"/>
+        </Grid>
+    </Grid>
+</Window>
