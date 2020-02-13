@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace CashRegister.Shared
@@ -16,7 +18,7 @@ namespace CashRegister.Shared
         public decimal UnitPrice { get; set; }
     }
 
-    public class ReceiptLine
+    public class ReceiptLine : INotifyPropertyChanged
     {
         [JsonPropertyName("id")]
         public int ID { get; set; }
@@ -25,12 +27,27 @@ namespace CashRegister.Shared
         public Product Product { get; set; }
 
         [JsonPropertyName("amount")]
-        public int Amount { get; set; }
+        public int Amount { get { return amount; } set { amount = value; OnPropertyChanged(nameof(Amount)); } }
+
+        private int amount { get; set; }
 
         [JsonPropertyName("totalPrice")]
-        public decimal TotalPrice { get; set; }
-    }
+        public decimal TotalPrice
+        {
+            get { return totalPrice; }
+            set { totalPrice = value; OnPropertyChanged(nameof(TotalPrice)); }
+        }
 
+        private decimal totalPrice { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+    }
     public class Receipt
     {
         [JsonPropertyName("id")]

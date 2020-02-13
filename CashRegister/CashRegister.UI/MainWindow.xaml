@@ -16,7 +16,7 @@
                 <ItemsControl ItemsSource="{Binding Path=Products}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding Path=ProductName}" Width="150" Height="100" Margin="2 2 2 2" Click="AddToBasket" />
+                            <Button Content="{Binding Path=ProductName}" Tag="{Binding Path=id}" Width="150" Height="100" Margin="2 2 2 2" Click="AddToBasket" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemsPanel>

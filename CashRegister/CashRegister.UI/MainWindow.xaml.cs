@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -62,14 +63,6 @@ namespace CashRegister.UI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName)
-        {
-            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
-        }
-        protected void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            PropertyChanged?.Invoke(this, e);
-        }
 
         private void AddToBasket(object sender, RoutedEventArgs e)
         {
@@ -84,9 +77,13 @@ namespace CashRegister.UI
                 ReceiptLine receiptLine = Basket.First(p => p.Product.ID == product.ID);
                 receiptLine.Amount++;
                 receiptLine.TotalPrice += product.UnitPrice;
-                OnPropertyChanged(nameof(Basket));
             }
             TotalSum = Basket.Sum(p => p.TotalPrice);
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private async void OnCheckout(object sender, RoutedEventArgs e)
